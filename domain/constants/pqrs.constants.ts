@@ -14,3 +14,4 @@ export const PQRS_TYPE = {
   CLAIM: "reclamo",
   SUGGESTION: "sugerencia",
 };
+export const PQRS_LIST_QUERY_KEY = "pqrs";

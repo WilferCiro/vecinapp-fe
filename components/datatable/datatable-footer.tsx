@@ -22,7 +22,7 @@ export function DataTableFooter({
   const pageCount = Math.ceil(totalRows / pagination.pageSize);
 
   return (
-    <div className="flex items-center justify-between px-2">
+    <div className="flex-row md:flex items-center justify-between px-2 gap-3">
       <div className="flex items-center gap-2">
         <span className="text-sm">Filas</span>
         <Select

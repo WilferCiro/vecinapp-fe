@@ -1,20 +1,17 @@
 import { Button } from "@/components/ui/button";
 import { ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown, Check, Eye, Trash } from "lucide-react";
+import { ArrowUpDown } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import {
   PQRS_COLORS,
   PQRS_STATUS_TEXT,
   PQRS_TYPE,
 } from "../constants/pqrs.constants";
-import { toDateTimeString } from "@/utils/date.utils";
+import { humanizeDate } from "@/utils/date.utils";
 import { ButtonGroup } from "@/components/ui/button-group";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import { IPqrs } from "../types/pqrs.type";
+import PqrsModalInfo from "@/components/business/pqrs/pqrs-modal-info";
+import { PqrsModalDelete } from "@/components/business/pqrs/pqrs-modal-delete";
 
 export const tablePqrsColumns: ColumnDef<IPqrs>[] = [
   {
@@ -67,7 +64,7 @@ export const tablePqrsColumns: ColumnDef<IPqrs>[] = [
     header: "Creado el",
     cell: ({ row }) => (
       <div className="capitalize">
-        {toDateTimeString(row.getValue("createdAt"))}
+        {humanizeDate(row.getValue("createdAt"))}
       </div>
     ),
   },
@@ -75,36 +72,8 @@ export const tablePqrsColumns: ColumnDef<IPqrs>[] = [
     header: "Acciones",
     cell: ({ row }) => (
       <ButtonGroup>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button size={"sm"} variant={"secondary"} className="cursor-pointer">
-              <Eye />
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>Ver información completa</p>
-          </TooltipContent>
-        </Tooltip>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button size={"sm"} variant={"destructive"} className="cursor-pointer">
-              <Trash />
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>Eliminar registro</p>
-          </TooltipContent>
-        </Tooltip>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button size={"sm"} className="cursor-pointer">
-              <Check />
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>Responder</p>
-          </TooltipContent>
-        </Tooltip>
+        <PqrsModalInfo pqrs={row.original} />
+        <PqrsModalDelete pqrs={row.original} />
       </ButtonGroup>
     ),
   },

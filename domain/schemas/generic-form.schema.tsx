@@ -39,7 +39,7 @@ export type FormFieldSchema =
       type: "select" | "multiselect";
       service?: string;
       clearable?: boolean;
-      options?: { value: string; label: string }[];
+      options?: { value: string | null; label: string }[];
     })
   | (FormFieldCommonSchema & {
       type: "select_search" | "multiselect_search";

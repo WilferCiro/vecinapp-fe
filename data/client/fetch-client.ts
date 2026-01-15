@@ -54,7 +54,7 @@ export const fetchClient = async <T, U>({
     const json = await response.json();
     return json;
   } catch (e: any) {
-    const code = e.message;
+    const code = e?.message;
     console.log(e);
     throw new Error(
       AppErrorMessages[code as keyof typeof AppErrorMessages] ||

@@ -66,7 +66,13 @@ const getValidations = (fields: FormFieldSchema[]) => {
         validator = z.array(z.string());
         break;
       case "date":
-        validator = z.date();
+        validator = z.union([
+          z.date(),
+          z.object({
+            from: z.date().optional(),
+            to: z.date().optional(),
+          }),
+        ]);
         break;
       default:
         validator = z.string();

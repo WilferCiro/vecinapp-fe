@@ -28,7 +28,6 @@ import {
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 
-
 interface IFormComponent {
   form: FormType;
   formField: FormFieldSchema;
@@ -41,9 +40,20 @@ const FormComponent = ({ form, formField, children }: IFormComponent) => {
       control={form.control}
       name={formField.name}
       render={({ field, fieldState }) => (
-        <FormItem key={formField.name} className={cn(formField.className || "")}>
-          <div className={formField.horizontal ? "flex items-center justify-between gap-x-2" : ""}>
-            {formField.label && <FormLabel className="mb-2">{formField.label}</FormLabel>}
+        <FormItem
+          key={formField.name}
+          className={cn(formField.className || "")}
+        >
+          <div
+            className={
+              formField.horizontal
+                ? "flex items-center justify-between gap-x-2"
+                : ""
+            }
+          >
+            {formField.label && (
+              <FormLabel className="mb-2">{formField.label}</FormLabel>
+            )}
             <FormControl>{children({ ...field })}</FormControl>
           </div>
           {fieldState.error ? (
@@ -119,10 +129,14 @@ const GenericForm = ({ form, fields, className }: IGenericForm) => {
       case "select":
         return (
           <FormComponent form={form} formField={formField} key={formField.name}>
-            {({ ...field }) => (
-              <Select>
-                <SelectTrigger id={field.name} className="w-full">
-                  <SelectValue {...field} {...fieldProps} />
+            {({ value, onChange }) => (
+              <Select
+                value={value}
+                onValueChange={onChange}
+                disabled={formField.disabled}
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue {...fieldProps} />
                 </SelectTrigger>
                 <SelectContent>
                   {formField.options?.map((option) => (

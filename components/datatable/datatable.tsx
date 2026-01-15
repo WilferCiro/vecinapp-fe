@@ -5,6 +5,7 @@ import {
   flexRender,
   getCoreRowModel,
   useReactTable,
+  PaginationState,
 } from "@tanstack/react-table";
 
 import {
@@ -15,17 +16,29 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
+import { Card, CardContent } from "../ui/card";
+import { DataTableFooter } from "./datatable-footer";
+import { Separator } from "../ui/separator";
 
 interface DataTableProps<T> {
   columns: ColumnDef<T>[];
   data: T[];
-  title: string;
   loading?: boolean;
-  filterComponents?: React.ReactNode;
+  isError?: boolean;
+  pagination: {
+    pagination: PaginationState;
+    totalRows: number;
+    onPaginationChange: (p: PaginationState) => void;
+  };
 }
 
-export function DataTable<T>({ columns, data, title, loading, filterComponents }: DataTableProps<T>) {
+export function DataTable<T>({
+  columns,
+  data,
+  loading,
+  pagination,
+  isError,
+}: DataTableProps<T>) {
   const table = useReactTable({
     data,
     columns,
@@ -33,17 +46,8 @@ export function DataTable<T>({ columns, data, title, loading, filterComponents }
   });
 
   return (
-    <div className="rounded-md border w-full">
+    <div className="w-full">
       <Card>
-        <CardHeader>
-          <div className="flex items-baseline justify-between gap-2">
-            <div>
-              <CardTitle className="text-lg">{title}</CardTitle>
-            </div>
-
-            <div className="flex items-center gap-2">{filterComponents}</div>
-          </div>
-        </CardHeader>
         <CardContent>
           <Table>
             <TableHeader>
@@ -81,12 +85,19 @@ export function DataTable<T>({ columns, data, title, loading, filterComponents }
                     colSpan={columns.length}
                     className="h-24 text-center"
                   >
-                    Sin resultados
+                    {loading ? "Cargando" : "Sin resultados"}
+                    {isError ? "Ocurrió un error" : ""}
                   </TableCell>
                 </TableRow>
               )}
             </TableBody>
           </Table>
+          <Separator className="my-2" />
+          <DataTableFooter
+            pagination={pagination.pagination}
+            totalRows={pagination.totalRows}
+            onPaginationChange={pagination.onPaginationChange}
+          />
         </CardContent>
       </Card>
     </div>
